@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 public class DetailActivityFragment extends Fragment {
 
     public DetailActivityFragment() {
+        // Not used
     }
 
 //    @Override
