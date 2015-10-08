@@ -18,6 +18,8 @@ package com.example.android.sunshine.app.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
+import android.util.Log;
 
 import com.example.android.sunshine.app.data.WeatherContract.LocationEntry;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
@@ -26,6 +28,8 @@ import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
  * Manages a local database for weather data.
  */
 public class WeatherDbHelper extends SQLiteOpenHelper {
+    private final String LOG_TAG = WeatherDbHelper.class.getSimpleName();
+
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 2;
@@ -70,6 +74,24 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_WEATHER_TABLE);
+
+        createLocation(sqLiteDatabase);
+    }
+
+    private void createLocation(SQLiteDatabase sqLiteDatabase) {
+        StringBuilder createLocation = new StringBuilder("CREATE TABLE ");
+        createLocation.append(LocationEntry.TABLE_NAME).append(" (")
+                .append(LocationEntry._ID).append(" integer primary key autoincrement, ")
+                .append(LocationEntry.COLUMN_LOCATION_SETTING).append(" text unique not null, ")
+                .append(LocationEntry.COLUMN_CITY_NAME).append(" text not null, ")
+                .append(LocationEntry.COLUMN_COORD_LAT).append(" real not null, ")
+                .append(LocationEntry.COLUMN_COORD_LONG).append(" real not null ")
+                .append(");");
+
+        String createString = createLocation.toString();
+        Log.d(LOG_TAG, createString);
+
+        sqLiteDatabase.execSQL(createString);
     }
 
     @Override
