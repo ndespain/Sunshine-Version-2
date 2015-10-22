@@ -168,10 +168,11 @@ public class ForecastFragment extends Fragment {
             // http://openweathermap.org/API#forecast
 
             Uri uri = Uri.parse("http://api.openweathermap.org/data/2.5/forecast/daily?")
-                    .buildUpon().appendQueryParameter("q",cityOrZip)
+                    .buildUpon().appendQueryParameter("q", cityOrZip)
                     .appendQueryParameter("units", "metric")
                     .appendQueryParameter("cnt","7")
                     .appendQueryParameter("mode", "json")
+                    .appendQueryParameter("APPID", getString(R.string.api_key))
                     .build();
             URL url = null;
             try {
