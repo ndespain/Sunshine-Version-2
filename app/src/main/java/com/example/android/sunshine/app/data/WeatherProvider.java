@@ -50,6 +50,18 @@ public class WeatherProvider extends ContentProvider {
                         " = " + WeatherContract.LocationEntry.TABLE_NAME +
                         "." + WeatherContract.LocationEntry._ID);
     }
+//
+//    private static final SQLiteQueryBuilder sWeatherQueryBuilder;
+//    static {
+//        sWeatherQueryBuilder = new SQLiteQueryBuilder();
+//        sWeatherQueryBuilder.setTables(WeatherContract.WeatherEntry.TABLE_NAME);
+//    }
+//
+//    private static final SQLiteQueryBuilder sLocationQueryBuilder;
+//    static {
+//        sLocationQueryBuilder = new SQLiteQueryBuilder();
+//        sLocationQueryBuilder.setTables(WeatherContract.LocationEntry.TABLE_NAME);
+//    }
 
     //location.location_setting = ?
     private static final String sLocationSettingSelection =
@@ -67,6 +79,22 @@ public class WeatherProvider extends ContentProvider {
             WeatherContract.LocationEntry.TABLE_NAME +
                     "." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
                     WeatherContract.WeatherEntry.COLUMN_DATE + " = ? ";
+
+    private static final String sWeatherSelection = WeatherContract.WeatherEntry.TABLE_NAME;
+
+//    private Cursor getWeather(Uri uri, String[] projection, String sortOrder) {
+//        long startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
+//        return sWeatherQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+//                projection,
+//                null,null,null,null,sortOrder);
+//    }
+
+
+//    private Cursor getLocation(final Uri uri, final String[] projection, final String sortOrder) {
+//        return sLocationQueryBuilder.query(mOpenHelper.getReadableDatabase(), projection,
+//                null, null, null, null, sortOrder);
+//    }
+
 
     private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
@@ -154,8 +182,10 @@ public class WeatherProvider extends ContentProvider {
 
         switch (match) {
             // Student: Uncomment and fill out these two cases
-//            case WEATHER_WITH_LOCATION_AND_DATE:
-//            case WEATHER_WITH_LOCATION:
+            case WEATHER_WITH_LOCATION_AND_DATE:
+                return WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE;
+            case WEATHER_WITH_LOCATION:
+                return WeatherContract.WeatherEntry.CONTENT_TYPE;
             case WEATHER:
                 return WeatherContract.WeatherEntry.CONTENT_TYPE;
             case LOCATION:
@@ -185,12 +215,20 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = null;
+                // This way worked too.
+//                retCursor = getWeather(uri, projection, sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME, projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = null;
+                // This way worked too.
+//                retCursor = getLocation(uri, projection, sortOrder);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.LocationEntry.TABLE_NAME, projection, selection, selectionArgs,
+                        null, null, sortOrder);
                 break;
             }
 
@@ -218,6 +256,15 @@ public class WeatherProvider extends ContentProvider {
                     returnUri = WeatherContract.WeatherEntry.buildWeatherUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case LOCATION: {
+                long _id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, values);
+                if (_id > 0) {
+                    returnUri = WeatherContract.LocationEntry.buildLocationUri(_id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert Location row into" + uri);
+                }
                 break;
             }
             default:
