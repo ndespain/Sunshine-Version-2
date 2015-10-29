@@ -284,6 +284,7 @@ public class WeatherProvider extends ContentProvider {
         // Student: Use the uriMatcher to match the WEATHER and LOCATION URI's we are going to
         // handle.  If it doesn't match these, throw an UnsupportedOperationException.
         final int uriMatch = sUriMatcher.match(uri);
+        if (null == selection) selection = "1";
         switch (uriMatch) {
             case WEATHER: {
                 deletedCount = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
@@ -305,8 +306,6 @@ public class WeatherProvider extends ContentProvider {
         if (deletedCount > 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
-
-        // Oh, and you should notify the listeners here.
 
         db.close();
 
