@@ -50,7 +50,7 @@ public class TestProvider extends AndroidTestCase {
        Students: Replace the calls to deleteAllRecordsFromDB with this one after you have written
        the delete functionality in the ContentProvider.
      */
-    public void deleteAllRecordsFromProvider() {
+    public void  deleteAllRecordsFromProvider() {
         mContext.getContentResolver().delete(
                 WeatherEntry.CONTENT_URI,
                 null,
