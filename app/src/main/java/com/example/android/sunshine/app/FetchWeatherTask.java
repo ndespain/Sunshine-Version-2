@@ -15,10 +15,12 @@
  */
 package com.example.android.sunshine.app;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -100,6 +102,17 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return highLowStr;
     }
 
+    static ContentValues createLocationValues(String locationSetting, String cityName, double lat, double lon) {
+        // Create a new map of values, where column names are the keys
+        ContentValues locationValues = new ContentValues();
+        locationValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+        locationValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
+        locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
+        locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
+
+        return locationValues;
+    }
+
     /**
      * Helper method to handle insertion of a new location in the weather database.
      *
@@ -114,15 +127,32 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         // If it exists, return the current ID
         // Otherwise, insert it using the content resolver and the base URI
         // A cursor is your primary interface to the query results.
-//        Cursor cursor = mContext.getContentResolver().query(
-//                WeatherContract.LocationEntry.CONTENT_URI,
-//                null,   // projection
-//                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
-//                new String[] { locationSetting},   // Values for the "where" clause
-//                null    // sort order
-//        );
+        long id = -1;
+        WeatherDbHelper dbHelper = new WeatherDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        return -1;
+        Cursor cursor = mContext.getContentResolver().query(
+                WeatherContract.LocationEntry.CONTENT_URI,
+                null,   // projection
+                WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+                new String[] { locationSetting},   // Values for the "where" clause
+                null    // sort order
+        );
+
+        if (cursor.moveToFirst()) {
+            int indx = cursor.getColumnIndex(WeatherContract.LocationEntry._ID);
+            id = cursor.getLong(indx);
+        } else {
+            final ContentValues locationValues = createLocationValues(locationSetting, cityName, lat, lon);
+            // directo to database insert
+//            id = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, locationValues);
+            // content resolver insert
+            final Uri locationUri = mContext.getContentResolver().insert(WeatherContract.LocationEntry.CONTENT_URI, locationValues);
+            id = ContentUris.parseId(locationUri);
+
+        }
+
+        return id;
     }
 
     /*
