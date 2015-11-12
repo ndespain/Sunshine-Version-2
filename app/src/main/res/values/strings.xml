@@ -17,8 +17,8 @@
     <string name="pref_units_key">units</string>
     <string name="pref_units_metric_display">Metric</string>
     <string name="pref_units_imperial_display">Imperial</string>
-    <string name="pref_units_metric_value">metric</string>
-    <string name="pref_units_imperial_value">imperial</string>
+    <string name="pref_units_metric">metric</string>
+    <string name="pref_units_imperial">imperial</string>
 
 
 </resources>

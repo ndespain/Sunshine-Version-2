@@ -67,8 +67,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void showLocationOnMap() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String location = preferences.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+        String location = Utility.getPreferredLocation(this);
 
 //        Uri uri = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q",location).build();  //this is removing the 0,0 for some reason. Which messed up the intent
         Uri uri = Uri.parse("geo:0,0?q=" + location);
