@@ -50,4 +50,15 @@ public class Utility {
         Date date = new Date(dateInMillis);
         return DateFormat.getDateInstance().format(date);
     }
+
+    /**
+     * Prepare the weather high/lows for presentation.
+     */
+    public static String formatHighLows(Context context, double high, double low) {
+        boolean isMetric = Utility.isMetric(context);
+        String highLowStr = Utility.formatTemperature(high, isMetric) + "/" + Utility.formatTemperature(low, isMetric);
+        return highLowStr;
+    }
+
+
 }
