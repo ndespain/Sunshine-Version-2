@@ -18,6 +18,7 @@ package com.example.android.sunshine.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -60,5 +61,9 @@ public class Utility {
         return highLowStr;
     }
 
+    public static void showToast(Context context, String message) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
 }

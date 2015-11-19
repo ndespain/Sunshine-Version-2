@@ -6,30 +6,52 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.logging.Logger;
 
 
 public class MainActivity extends ActionBarActivity {
+    private static final String FORCASTFRAGMENT_TAG = "forecastFragment";
+    public static final String LOCATION_KEY = "location";
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private String mLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(LOG_TAG, "ON CREATE");
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
+//        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORCASTFRAGMENT_TAG)
                     .commit();
-        }
+//        }
+        // If I do this then calling onLocationChanged in onResume below won't work because onCreate is called when coming back from the SettingActivity,
+        // so mLocation gets updated here before onResume gets called.
+//        mLocation = Utility.getPreferredLocation(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+//        super.onSaveInstanceState(outState);
+        outState.putString(LOCATION_KEY, mLocation);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+        mLocation = savedInstanceState.getString(LOCATION_KEY);
+
     }
 
     @Override
@@ -67,25 +89,19 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void showLocationOnMap() {
-        String location = Utility.getPreferredLocation(this);
+//        String location = Utility.getPreferredLocation(this);
 
-//        Uri uri = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q",location).build();  //this is removing the 0,0 for some reason. Which messed up the intent
-        Uri uri = Uri.parse("geo:0,0?q=" + location);
+        Uri uri = Uri.parse("geo:0,0?q=" + mLocation);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
-//        intent.setData(uri);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
 
         } else {
-            showToast(this, "No app to show location.");
+            Utility.showToast(this, "No app to show location.");
         }
     }
 
-    private void showToast(Context context, String message) {
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        toast.show();
-    }
 
 
     @Override
@@ -110,6 +126,17 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         Log.i(LOG_TAG, "ON RESUME");
+
+        final ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(FORCASTFRAGMENT_TAG);
+        String location = Utility.getPreferredLocation(this);
+        if (fragment != null) {
+            if (location != null && !location.equals(mLocation)) {
+                mLocation = location;
+                fragment.onLocationChanged(mLocation);
+            } else {
+                fragment.restartLoader();
+            }
+        }
     }
 
     @Override

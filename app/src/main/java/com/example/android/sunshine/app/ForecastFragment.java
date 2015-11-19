@@ -89,8 +89,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
-                            ));
+                            locationSetting, cursor.getLong(COL_WEATHER_DATE)
+                    ));
                     startActivity(intent);
                 }
             }
@@ -110,11 +110,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         toast.show();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateWeather();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        updateWeather();
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -140,6 +140,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onLocationChanged(String location) {
+        updateWeather();
+        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
+    }
+
+    public void restartLoader() {
+        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
     }
 
     private void updateWeather() {
