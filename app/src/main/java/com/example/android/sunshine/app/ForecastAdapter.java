@@ -15,6 +15,10 @@ import com.example.android.sunshine.app.data.WeatherContract;
  * from a {@link android.database.Cursor} to a {@link android.widget.ListView}.
  */
 public class ForecastAdapter extends CursorAdapter {
+
+    public static final int VIEW_ITEM_TYPE_TODAY = 0;
+    public static final int VIEW_ITEM_TYPE_FUTURE = 1;
+
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -48,14 +52,34 @@ public class ForecastAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
+        View view;
+        int viewType = getItemViewType(cursor.getPosition());
+        if (viewType == VIEW_ITEM_TYPE_TODAY) {
+            view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast_today, parent, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
+        }
 
         return view;
     }
 
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(final int position) {
+        if (position == 0) {
+            return VIEW_ITEM_TYPE_TODAY;
+        } else {
+            return VIEW_ITEM_TYPE_FUTURE;
+        }
+    }
+
     /*
-        This is where we fill-in the views with the contents of the cursor.
-     */
+                This is where we fill-in the views with the contents of the cursor.
+             */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
