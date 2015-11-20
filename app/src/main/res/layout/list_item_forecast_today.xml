@@ -1,54 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
+              android:minHeight="?android:attr/listPreferredItemHeight"
               android:orientation="horizontal"
+              android:gravity="center_vertical"
               android:padding="16dp"
     >
-    <ImageView
-        android:id="@+id/list_item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
-        />
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1"
         android:paddingLeft="16dp"
+        android:gravity="center"
         >
         <TextView
             android:id="@+id/list_item_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Later"
+            android:textSize="18dp"
+            android:text="Today"
+            android:paddingBottom="8dp"
             />
-        <TextView
-              android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:text="Today - Sunny - 88/63"
-              android:id="@+id/list_item_forecast_textview"
-              android:gravity="center_vertical"
-              android:paddingTop="4dp"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:paddingLeft="16dp">
         <TextView
             android:id="@+id/list_item_high_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
             android:text="12"
             />
         <TextView
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/list_item_low_textview"
-            android:gravity="center"
+            android:textSize="18dp"
+            android:paddingTop="4dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:paddingLeft="16dp">
+        <ImageView
+            android:id="@+id/list_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_launcher"
+            />
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Snowy"
+            android:id="@+id/list_item_forecast_textview"
+            android:textSize="18dp"
             android:paddingTop="4dp"
             />
     </LinearLayout>

@@ -58,10 +58,21 @@ public class ForecastAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        // our view is pretty simple here --- just a text view
-        // we'll keep the UI functional with a simple (and slow!) binding.
 
-        TextView tv = (TextView)view.findViewById(R.id.list_item_forecast_textview);
-        tv.setText(convertCursorRowToUXFormat(cursor));
+        TextView desc = (TextView)view.findViewById(R.id.list_item_forecast_textview);
+        TextView date = (TextView)view.findViewById(R.id.list_item_date_textview);
+        TextView min = (TextView) view.findViewById(R.id.list_item_low_textview);
+        TextView max = (TextView) view.findViewById(R.id.list_item_high_textview);
+
+        desc.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
+        date.setText(Utility.getFriendlyDayString(mContext, cursor.getLong(ForecastFragment.COL_WEATHER_DATE)));
+
+        boolean isMetric = Utility.isMetric(mContext);
+        double minTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
+        min.setText(Utility.formatTemperature(minTemp, isMetric));
+
+        double maxTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
+        max.setText(Utility.formatTemperature(maxTemp, isMetric));
+
     }
 }
