@@ -6,6 +6,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -60,6 +61,9 @@ public class ForecastAdapter extends CursorAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
         }
 
+        ViewHolder holder = new ViewHolder(view);
+        view.setTag(holder);
+
         return view;
     }
 
@@ -83,20 +87,35 @@ public class ForecastAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        TextView desc = (TextView)view.findViewById(R.id.list_item_forecast_textview);
-        TextView date = (TextView)view.findViewById(R.id.list_item_date_textview);
-        TextView min = (TextView) view.findViewById(R.id.list_item_low_textview);
-        TextView max = (TextView) view.findViewById(R.id.list_item_high_textview);
+        ViewHolder holder = (ViewHolder) view.getTag();
 
-        desc.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
-        date.setText(Utility.getFriendlyDayString(mContext, cursor.getLong(ForecastFragment.COL_WEATHER_DATE)));
+        holder.iconView.setImageResource(R.drawable.ic_launcher);
+
+        holder.descriptionView.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
+        holder.dateView.setText(Utility.getFriendlyDayString(mContext, cursor.getLong(ForecastFragment.COL_WEATHER_DATE)));
 
         boolean isMetric = Utility.isMetric(mContext);
         double minTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
-        min.setText(Utility.formatTemperature(minTemp, isMetric));
+        holder.minView.setText(Utility.formatTemperature(context, minTemp, isMetric));
 
         double maxTemp = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
-        max.setText(Utility.formatTemperature(maxTemp, isMetric));
+        holder.maxView.setText(Utility.formatTemperature(context, maxTemp, isMetric));
 
+    }
+
+    public static class ViewHolder {
+        ImageView iconView;
+        TextView descriptionView;
+        TextView dateView;
+        TextView minView;
+        TextView maxView;
+
+        public ViewHolder(View view) {
+            this.dateView = (TextView)view.findViewById(R.id.list_item_date_textview);
+            this.descriptionView = (TextView)view.findViewById(R.id.list_item_forecast_textview);;
+            this.iconView = (ImageView) view.findViewById(R.id.list_item_icon);;
+            this.maxView = (TextView) view.findViewById(R.id.list_item_high_textview);;
+            this.minView = (TextView) view.findViewById(R.id.list_item_low_textview);
+        }
     }
 }
