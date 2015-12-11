@@ -31,7 +31,7 @@
 
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
     <string name="humidity">HUMIDITY:</string>
-    <string name="pressure">PRESSURE</string>
-    <string name="wind">WIND</string>
+    <string name="pressure">PRESSURE:</string>
+    <string name="wind">WIND:</string>
 
 </resources>

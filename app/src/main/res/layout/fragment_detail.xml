@@ -1,113 +1,191 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context="com.example.android.sunshine.app.DetailActivityFragment">
-
-    <TextView
-        android:id="@+id/detail_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Today"/>
-
-    <TextView
-        android:id="@+id/detail_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Deslumber 43"/>
+    tools:context="com.example.android.sunshine.app.DetailActivityFragment"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/detail_high_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="430"/>
-            <TextView
-                android:id="@+id/detail_low_temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="-230"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_horizontal">
-            <ImageView
-                android:id="@+id/detail_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"/>
-            <TextView
-                android:id="@+id/detail_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Zippy"/>
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:orientation="vertical">
 
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
         <TextView
+            android:id="@+id/detail_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/humidity"/>
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textSize="@dimen/textSize"
+            android:text="Today"/>
+
+        <TextView
+            android:id="@+id/detail_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textSize"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="Deslumber 43"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/detail_high_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSizeLarge"
+                    android:text="430"/>
+                <TextView
+                    android:id="@+id/detail_low_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSizeLarge"
+                    android:text="-230"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+                <ImageView
+                    android:id="@+id/detail_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_launcher"/>
+                <TextView
+                    android:id="@+id/detail_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textSize"
+                    android:text="Zippy"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/detail_humidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textSize="@dimen/textSize"
             android:text="110%"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/wind"/>
         <TextView
             android:id="@+id/detail_wind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textSize="@dimen/textSize"
             android:text="45 mph N"/>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/pressure"/>
         <TextView
             android:id="@+id/detail_pressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textSize="@dimen/textSize"
             android:text="1000 hPa"/>
+
+        <!--<TextView android:id="@+id/weatherSummary" android:text="@string/hello_world" android:layout_width="wrap_content"-->
+                  <!--android:layout_height="wrap_content" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:textSize="@dimen/textSize"-->
+            <!--android:text="1000 hPa"/>-->
     </LinearLayout>
 
-    <TextView android:id="@+id/weatherSummary" android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+</ScrollView>

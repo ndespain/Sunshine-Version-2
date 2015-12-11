@@ -68,10 +68,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         Intent intent = getActivity().getIntent();
 
-        mWeatherSummaryTV = (TextView) rootView.findViewById(R.id.weatherSummary);
-//            mForecastUri = intent.getStringExtra(Intent.EXTRA_TEXT);
+//        mWeatherSummaryTV = (TextView) rootView.findViewById(R.id.weatherSummary);
         mForecastUri = intent.getData();
-//            mWeatherSummaryTV.setText(mForecastUri.toString());
         return rootView;
     }
 
@@ -114,7 +112,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(final Loader<Cursor> loader, final Cursor cursor) {
         if (cursor.moveToFirst()) {
             mForecastStr = convertCursorRowToUXFormat(cursor);
-            mWeatherSummaryTV.setText(mForecastStr);
+//            mWeatherSummaryTV.setText(mForecastStr);
             if (mShareActionProvider != null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
             }
