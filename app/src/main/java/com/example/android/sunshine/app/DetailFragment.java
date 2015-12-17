@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,24 +17,40 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String LOG_TAG = com.example.android.sunshine.app.DetailFragment.class.getSimpleName();
+    private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private static final int DETAIL_LOADER_ID = 2;
 
     private static final String FORECAST_SHARE_HASHTAG = " Ta-da";
+    @InjectView(R.id.detail_day)
+    TextView mDetailDay;
+    @InjectView(R.id.detail_date)
+    TextView mDetailDate;
+    @InjectView(R.id.detail_high_temp)
+    TextView mDetailHighTemp;
+    @InjectView(R.id.detail_low_temp)
+    TextView mDetailLowTemp;
+    @InjectView(R.id.detail_icon)
+    ImageView mDetailIcon;
+    @InjectView(R.id.detail_description)
+    TextView mDetailDescription;
     private String mForecastStr;
     private Uri mForecastUri;
     private ShareActionProvider mShareActionProvider;
 
     private String[] DETAIL_COLUMNS = {
-        WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
+            WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COLUMN_DATE,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
@@ -41,7 +58,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.LocationEntry.COLUMN_COORD_LAT,
-            WeatherContract.LocationEntry.COLUMN_COORD_LONG
+            WeatherContract.LocationEntry.COLUMN_COORD_LONG,
+            WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
+            WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
+            WeatherContract.WeatherEntry.COLUMN_DEGREES,
+            WeatherContract.WeatherEntry.COLUMN_PRESSURE
     };
 
     static final int COL_WEATHER_ID = 0;
@@ -53,7 +74,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
+    static final int COL_HUMIDITY = 9;
+    static final int COL_WIND_SPEED = 10;
+    static final int COL_DEGREES = 11;
+    static final int COL_PRESSURE = 12;
+
+
     private TextView mWeatherSummaryTV;
+    private TextView mWindSpeed;
+    private TextView mAirPressure;
+    private TextView mHumidity;
 
 
     public DetailFragment() {
@@ -65,10 +95,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        ButterKnife.inject(this, rootView);
 
         Intent intent = getActivity().getIntent();
 
 //        mWeatherSummaryTV = (TextView) rootView.findViewById(R.id.weatherSummary);
+        mWindSpeed = (TextView) rootView.findViewById(R.id.detail_wind);
+        mAirPressure = (TextView) rootView.findViewById(R.id.detail_pressure);
+        mHumidity = (TextView) rootView.findViewById(R.id.detail_humidity);
         mForecastUri = intent.getData();
         return rootView;
     }
@@ -111,8 +145,23 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(final Loader<Cursor> loader, final Cursor cursor) {
         if (cursor.moveToFirst()) {
-            mForecastStr = convertCursorRowToUXFormat(cursor);
-//            mWeatherSummaryTV.setText(mForecastStr);
+            Context context = getActivity();
+            boolean isMetric = Utility.isMetric(context);
+
+            // Change this later when I have other icons.
+            int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
+            mDetailIcon.setImageResource(R.drawable.ic_launcher);
+
+            long date = cursor.getLong(COL_WEATHER_DATE);
+            mDetailDay.setText(Utility.getFriendlyDayString(context, date));
+            mDetailDate.setText(Utility.getFormattedMonthDay(context, date));
+            mDetailHighTemp.setText(Utility.formatTemperature(context, cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric));
+            mDetailLowTemp.setText(Utility.formatTemperature(context, cursor.getDouble(COL_WEATHER_MIN_TEMP), isMetric));
+            mDetailDescription.setText(cursor.getString(COL_WEATHER_DESC));
+            mHumidity.setText(context.getString(R.string.format_humidity, cursor.getFloat(COL_HUMIDITY)));
+
+            mWindSpeed.setText(Utility.getFormattedWind(context, cursor.getFloat(COL_WIND_SPEED), cursor.getFloat(COL_DEGREES)));
+            mAirPressure.setText(context.getString(R.string.format_pressure, cursor.getFloat(COL_PRESSURE)));
             if (mShareActionProvider != null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
             }
@@ -140,4 +189,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 " - " + highAndLow;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
 }
