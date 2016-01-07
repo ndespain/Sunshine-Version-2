@@ -19,7 +19,7 @@
             android:id="@+id/list_item_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="@dimen/textSize"
             android:text="Today"
             android:paddingBottom="8dp"
             />
@@ -27,14 +27,14 @@
             android:id="@+id/list_item_high_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
+            android:textSize="@dimen/textSize"
             android:text="12"
             />
         <TextView
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="0"
             android:id="@+id/list_item_low_textview"
-            android:textSize="18dp"
+            android:textSize="@dimen/textSize"
             android:paddingTop="4dp"
             />
     </LinearLayout>
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="Snowy"
             android:id="@+id/list_item_forecast_textview"
-            android:textSize="18dp"
+            android:textSize="@dimen/textSize"
             android:paddingTop="4dp"
             />
     </LinearLayout>
