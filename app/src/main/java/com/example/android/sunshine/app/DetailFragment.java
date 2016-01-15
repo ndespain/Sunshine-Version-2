@@ -150,7 +150,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
             // Change this later when I have other icons.
             int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
-            mDetailIcon.setImageResource(R.drawable.ic_launcher);
+            mDetailIcon.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
             long date = cursor.getLong(COL_WEATHER_DATE);
             mDetailDay.setText(Utility.getFriendlyDayString(context, date));
