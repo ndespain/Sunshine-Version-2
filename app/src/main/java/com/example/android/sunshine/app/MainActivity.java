@@ -1,41 +1,37 @@
 package com.example.android.sunshine.app;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.PersistableBundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import java.util.logging.Logger;
 
 
 public class MainActivity extends ActionBarActivity {
-    private static final String FORCASTFRAGMENT_TAG = "forecastFragment";
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
     public static final String LOCATION_KEY = "location";
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private String mLocation;
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(LOG_TAG, "ON CREATE");
         setContentView(R.layout.activity_main);
-//        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment(), FORCASTFRAGMENT_TAG)
-                    .commit();
-//        }
+        if (findViewById(R.id.weather_detail_container) != null) {
+            mTwoPane = true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
+        }
+
         // If I do this then calling onLocationChanged in onResume below won't work because onCreate is called when coming back from the SettingActivity,
         // so mLocation gets updated here before onResume gets called.
 //        mLocation = Utility.getPreferredLocation(this);
@@ -127,7 +123,7 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         Log.i(LOG_TAG, "ON RESUME");
 
-        final ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(FORCASTFRAGMENT_TAG);
+        final ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
         String location = Utility.getPreferredLocation(this);
         if (fragment != null) {
             if (location != null && !location.equals(mLocation)) {

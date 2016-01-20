@@ -135,11 +135,19 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
-        if (mForecastUri == null) {
+        Intent intent = getActivity().getIntent();
+        if (intent == null || intent.getData() == null) {
             return null;
-        } else {
-            return new CursorLoader(getActivity(), mForecastUri, DETAIL_COLUMNS, null, null, null);
         }
+
+        return new CursorLoader(
+                getActivity(),
+                intent.getData(),
+                DETAIL_COLUMNS,
+                null,
+                null,
+                null
+        );
     }
 
     @Override
