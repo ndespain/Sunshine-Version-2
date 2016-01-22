@@ -33,6 +33,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int DETAIL_LOADER_ID = 2;
 
     private static final String FORECAST_SHARE_HASHTAG = " Ta-da";
+    public static String FORECASTURI = "forecastUri";
     @InjectView(R.id.detail_day)
     TextView mDetailDay;
     @InjectView(R.id.detail_date)
@@ -97,13 +98,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.inject(this, rootView);
 
-        Intent intent = getActivity().getIntent();
+//        Intent intent = getActivity().getIntent();
 
 //        mWeatherSummaryTV = (TextView) rootView.findViewById(R.id.weatherSummary);
         mWindSpeed = (TextView) rootView.findViewById(R.id.detail_wind);
         mAirPressure = (TextView) rootView.findViewById(R.id.detail_pressure);
         mHumidity = (TextView) rootView.findViewById(R.id.detail_humidity);
-        mForecastUri = intent.getData();
+        final Bundle args = getArguments();
+        if (args != null) {
+            mForecastUri = args.getParcelable(FORECASTURI);
+        }
         return rootView;
     }
 
@@ -135,14 +139,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(final int id, final Bundle args) {
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
+//        Intent intent = getActivity().getIntent();
+        if (mForecastUri == null) {
             return null;
         }
 
         return new CursorLoader(
                 getActivity(),
-                intent.getData(),
+                mForecastUri,
                 DETAIL_COLUMNS,
                 null,
                 null,

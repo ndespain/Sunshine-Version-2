@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
@@ -9,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     public static final String LOCATION_KEY = "location";
     private final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -63,10 +64,6 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-        }
 
         switch (id) {
             case R.id.action_settings :
@@ -145,5 +142,27 @@ public class MainActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         Log.i(LOG_TAG, "ON STOP");
+    }
+
+    @Override
+    public void onItemSelected(final Uri forecastUri) {
+
+        if (mTwoPane) {
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.FORECASTURI, forecastUri);
+
+            DetailFragment df = new DetailFragment();
+            df.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, df, DETAILFRAGMENT_TAG)
+                    .commit();
+
+
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.setData(forecastUri);
+            startActivity(intent);
+        }
     }
 }

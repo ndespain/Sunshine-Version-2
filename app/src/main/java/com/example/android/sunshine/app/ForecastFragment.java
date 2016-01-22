@@ -22,7 +22,7 @@ import android.support.v4.content.CursorLoader;
 import com.example.android.sunshine.app.data.WeatherContract;
 
 /**
- * Created by neildespain on 8/18/15.
+ * Created by neildespain on 8/18/15. Yep.
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int WEATHER_LOADER_ID = 1;
@@ -87,11 +87,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 if (cursor != null) {
 
                     String locationSetting = Utility.getPreferredLocation(getActivity());
-                    Intent intent = new Intent(getActivity(), DetailActivity.class);
-                    intent.setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                            locationSetting, cursor.getLong(COL_WEATHER_DATE)
-                    ));
-                    startActivity(intent);
+                    ((MainActivity)getActivity()).onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                            locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
             }
         });
@@ -185,7 +182,17 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     }
 
-
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(Uri dateUri);
+    }
 
 
 }
