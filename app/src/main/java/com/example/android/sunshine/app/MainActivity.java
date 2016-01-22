@@ -120,14 +120,17 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         super.onResume();
         Log.i(LOG_TAG, "ON RESUME");
 
-        final ForecastFragment fragment = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
         String location = Utility.getPreferredLocation(this);
-        if (fragment != null) {
-            if (location != null && !location.equals(mLocation)) {
-                mLocation = location;
-                fragment.onLocationChanged(mLocation);
-            } else {
-                fragment.restartLoader();
+        if (location != null && !location.equals(mLocation)) {
+            mLocation = location;
+            final ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            if (forecastFragment != null) {
+                forecastFragment.onLocationChanged(mLocation);
+            }
+
+            final DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (detailFragment != null) {
+                detailFragment.onLocationChanged(mLocation);
             }
         }
     }
