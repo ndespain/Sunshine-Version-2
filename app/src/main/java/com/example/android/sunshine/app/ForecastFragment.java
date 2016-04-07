@@ -87,7 +87,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 if (cursor != null) {
 
                     String locationSetting = Utility.getPreferredLocation(getActivity());
-                    ((MainActivity)getActivity()).onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                    ((Callback)getActivity()).onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                             locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
             }
