@@ -40,13 +40,13 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
-//        super.onSaveInstanceState(outState);
         outState.putString(LOCATION_KEY, mLocation);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
         mLocation = savedInstanceState.getString(LOCATION_KEY);
 
     }

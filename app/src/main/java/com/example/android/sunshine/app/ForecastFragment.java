@@ -26,7 +26,10 @@ import com.example.android.sunshine.app.data.WeatherContract;
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int WEATHER_LOADER_ID = 1;
+    public static final String SCROLL_POSTION = "scrollPostion";
     private ForecastAdapter mForecastAdapter;
+    private ListView mListView;
+    private int mStartScrollPosition;
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
@@ -74,10 +77,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        listView.setAdapter(mForecastAdapter);
+        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView.setAdapter(mForecastAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        if (savedInstanceState != null) {
+            mStartScrollPosition = savedInstanceState.getInt(SCROLL_POSTION);
+        }
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Context context = getActivity();
@@ -101,6 +108,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(WEATHER_LOADER_ID, null, this);
     }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        final int checkedItemPosition = mListView.getCheckedItemPosition();
+        outState.putInt(SCROLL_POSTION, checkedItemPosition);
+        super.onSaveInstanceState(outState);
+    }
+
+
 
     private void showToast(Context context, String message) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
@@ -174,6 +190,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(final Loader<Cursor> cursorLoader, final Cursor cursor) {
         mForecastAdapter.swapCursor(cursor);
+        if (mStartScrollPosition != ListView.INVALID_POSITION) {
+            mListView.smoothScrollToPosition(mStartScrollPosition);
+        }
     }
 
     @Override
