@@ -29,7 +29,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public static final String SCROLL_POSTION = "scrollPostion";
     private ForecastAdapter mForecastAdapter;
     private ListView mListView;
-    private int mStartScrollPosition;
+    private int mStartScrollPosition = ListView.INVALID_POSITION;
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
@@ -116,8 +116,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onSaveInstanceState(outState);
     }
 
-
-
     private void showToast(Context context, String message) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         toast.show();
@@ -192,7 +190,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         mForecastAdapter.swapCursor(cursor);
         if (mStartScrollPosition != ListView.INVALID_POSITION) {
             mListView.smoothScrollToPosition(mStartScrollPosition);
-        }
+        } /*else {
+            mListView.performItemClick(mListView.getChildAt(0), 0, mListView.getAdapter().getItemId(0));
+        }*/
     }
 
     @Override
