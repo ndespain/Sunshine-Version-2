@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="textSize">20sp</dimen>
     <dimen name="textSizeLarge">28sp</dimen>
+    <dimen name="two">16dp</dimen>
 </resources>
